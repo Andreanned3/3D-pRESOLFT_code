@@ -1,0 +1,2 @@
+set PATH=%PATH%;C:\ProgramData\Anaconda3\Scripts;C:\Users\andreas.boden\AppData\Local\Continuum\miniconda3\Scripts;C:\Users\testaRES\Miniconda3\Scripts
+activate MoNaLISA & start pythonw .\Reconstruction_widget.py || cmd \k
