@@ -16,10 +16,12 @@ from scipy.optimize import curve_fit
 import matplotlib.pyplot as plt
 
 os.environ['PYQTGRAPH_QT_LIB'] = 'PyQt5' #force Qt to use PyQt5
-if not os.environ['PY_UTILS_PATH'] in sys.path:
-    sys.path.append(os.environ['PY_UTILS_PATH'])
-import DataIO_tools
+#if not os.environ['PY_UTILS_PATH'] in sys.path:
+#    sys.path.append(os.environ['PY_UTILS_PATH'])
+#import DataIO_tools
 from pyqtgraph.Qt import QtCore, QtGui, QtWidgets
+sys.path.append(r"C:\\Users\ANDES399\Documents\GitHub\3D-pRESOLFT_code\Reconstruction_software")
+sys.path.append(r"C:\\Users\ANDES399\Documents\GitHub\3D-pRESOLFT_code\Reconstruction_software\dlls")
 
 from pyqtgraph.parametertree import Parameter, ParameterTree
 from pyqtgraph.dockarea import Dock, DockArea

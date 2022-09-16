@@ -12,13 +12,15 @@ import psutil
 
 import numpy as np
 import matplotlib.pyplot as plt
-
+sys.path.append(r"C:\\Users\ANDES399\Documents\GitHub\3D-pRESOLFT_code\Reconstruction_software")
+sys.path.append(r"C:\\Users\ANDES399\Documents\GitHub\3D-pRESOLFT_code\Reconstruction_software\dlls")
 os.environ['PYQTGRAPH_QT_LIB'] = 'PyQt5' #force Qt to use PyQt5
 from pyqtgraph.Qt import QtCore, QtGui, QtWidgets
-if not os.environ['PY_UTILS_PATH'] in sys.path:
-    sys.path.append(os.environ['PY_UTILS_PATH'])
+#if not os.environ['PY_UTILS_PATH'] in sys.path:
+#    sys.path.append(os.environ['PY_UTILS_PATH'])
 
-import DataIO_tools
+#sys.path.append(PY_UTILS_PATH)
+#import DataIO_tools
 from pyqtgraph.parametertree import Parameter, ParameterTree
 from pyqtgraph.dockarea import Dock, DockArea
 import pyqtgraph as pg
@@ -392,9 +394,12 @@ class ReconWid(QtGui.QMainWindow):
                     print('Trying to save to: ', savename,'Vx size:', vxsizec, vxsizer, vxsizez)
                     # Reconstructed image
                     reconstr_data = copy.deepcopy(reconstruction_obj.getReconstruction())
-                    reconstr_data = reconstr_data[:,0,:,:,:,:]
-                    reconstr_data.shape =  reconstr_data.shape[0], reconstr_data.shape[1], reconstr_data.shape[2], reconstr_data.shape[3], reconstr_data.shape[4], 1
-                    reconstr_data = np.swapaxes(reconstr_data, 1, 2)
+                   
+                    reconstr_data = reconstr_data[0,0,:,:,:,:]
+
+                    reconstr_data.shape =  reconstr_data.shape[0], reconstr_data.shape[1], reconstr_data.shape[2], reconstr_data.shape[3], 1
+                    reconstr_data = np.swapaxes(reconstr_data, 4, 2)
+                    print("reconstr_data ", reconstr_data.shape)
                     tiff.imwrite(savename, reconstr_data,
                                 imagej=True, resolution=(1/vxsizec, 1/vxsizer),
                                 metadata={'spacing': vxsizez, 'unit': 'nm', 'axes': 'TZCYX'})
@@ -646,7 +651,7 @@ class MultiDataFrame(QtGui.QFrame):
 
         self.timer = QtCore.QTimer()
         self.timer.timeout.connect(self.updateMemBar)
-        self.timer.start(1000)
+        self.timer.start(100000)
 
         """Set layout"""
         layout = QtGui.QGridLayout()
@@ -739,6 +744,7 @@ class MultiDataFrame(QtGui.QFrame):
             self.data_list.item(i).setBackground(QtGui.QColor('white'))
 
     def updateMemBar(self):
+
         self.memBar.setValue(psutil.virtual_memory()[2])
 
 
@@ -1542,14 +1548,17 @@ class DataObj(object):
         if self.data_loaded:
             pass
         else:
-            try:
-                self.data = DataIO_tools.load_data(self.data_path, dtype=np.uint16)
-                if not self.data is None:
-                    print('Data loaded')
-                    self.data_loaded = True
-                    self.frames = np.shape(self.data)[0]
-            except:
-                pass
+            #try:
+            print("TRYING TO LOAD DATA")
+            self.data = tiff.imread(self.data_path)
+            print(self.data.shape)
+            if not self.data is None:
+                print('Data loaded')
+                self.data_loaded = True
+                self.frames = np.shape(self.data)[0]
+  #          except:
+  #              print("I FAILED so bad")
+  #              pass
 
     def checkAndLoadDarkFrame(self):
         pass
