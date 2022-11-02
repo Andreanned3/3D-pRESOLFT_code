@@ -1,0 +1,11 @@
+Conda:
+numpy
+scipy
+pyqt=5 (Tempesta now needs also pyqt4, install both using pip to let them coexist)
+pyqtgraph
+matplotlib
+h5py
+
+Pip:
+tifffile
+psutil
